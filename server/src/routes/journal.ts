@@ -2,6 +2,7 @@ import { Router } from "express";
 import { z } from "zod";
 import { pool } from "../db/pool.js";
 import { requireAuth, type AuthedRequest } from "../middleware/auth.js";
+import { asyncHandler } from "../middleware/asyncHandler.js";
 
 export const journalRouter = Router();
 journalRouter.use(requireAuth);
@@ -12,7 +13,7 @@ const createSchema = z.object({
   linkedVerseIds: z.array(z.number().int()).default([]),
 });
 
-journalRouter.get("/", async (req: AuthedRequest, res) => {
+journalRouter.get("/", asyncHandler(async (req: AuthedRequest, res) => {
   const { rows } = await pool.query(
     `select id, prompt, content, linked_verse_ids, created_at
      from journal_entries where user_id = $1
@@ -20,9 +21,9 @@ journalRouter.get("/", async (req: AuthedRequest, res) => {
     [req.userId]
   );
   res.json(rows);
-});
+}));
 
-journalRouter.post("/", async (req: AuthedRequest, res) => {
+journalRouter.post("/", asyncHandler(async (req: AuthedRequest, res) => {
   const parsed = createSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.flatten() });
@@ -37,4 +38,4 @@ journalRouter.post("/", async (req: AuthedRequest, res) => {
   );
 
   res.status(201).json(rows[0]);
-});
+}));

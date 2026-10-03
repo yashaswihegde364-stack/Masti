@@ -2,6 +2,7 @@ import { Router } from "express";
 import { z } from "zod";
 import { pool } from "../db/pool.js";
 import { requireAuth, type AuthedRequest } from "../middleware/auth.js";
+import { asyncHandler } from "../middleware/asyncHandler.js";
 import { classify } from "../ai/classify.js";
 import { retrieveVerses } from "../ai/retrieve.js";
 import { generateResponse } from "../ai/generate.js";
@@ -15,7 +16,7 @@ const bodySchema = z.object({
   message: z.string().min(1).max(2000),
 });
 
-chatRouter.post("/", async (req: AuthedRequest, res) => {
+chatRouter.post("/", asyncHandler(async (req: AuthedRequest, res) => {
   const parsed = bodySchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.flatten() });
@@ -54,7 +55,7 @@ chatRouter.post("/", async (req: AuthedRequest, res) => {
     verses: verses.filter((v) => generated.citedVerseIds.includes(v.id)),
     flagged: safety.flags,
   });
-});
+}));
 
 async function resolveConversation(
   conversationId: string | undefined,

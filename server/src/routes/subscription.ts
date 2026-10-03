@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { pool } from "../db/pool.js";
 import { requireAuth, type AuthedRequest } from "../middleware/auth.js";
+import { asyncHandler } from "../middleware/asyncHandler.js";
 
 export const subscriptionRouter = Router();
 subscriptionRouter.use(requireAuth);
@@ -11,7 +12,7 @@ subscriptionRouter.use(requireAuth);
  * render against. Stripe/RevenueCat integration replaces the body of
  * these two handlers without changing the response shape the app expects.
  */
-subscriptionRouter.get("/", async (req: AuthedRequest, res) => {
+subscriptionRouter.get("/", asyncHandler(async (req: AuthedRequest, res) => {
   const { rows } = await pool.query(
     `select status, plan, current_period_end from subscriptions
      where user_id = $1 order by created_at desc limit 1`,
@@ -19,11 +20,11 @@ subscriptionRouter.get("/", async (req: AuthedRequest, res) => {
   );
 
   res.json(rows[0] ?? { status: "free", plan: null, current_period_end: null });
-});
+}));
 
-subscriptionRouter.post("/checkout", async (_req: AuthedRequest, res) => {
+subscriptionRouter.post("/checkout", asyncHandler(async (_req: AuthedRequest, res) => {
   res.status(501).json({
     error: "Payment processor not yet wired up.",
     nextStep: "Integrate Stripe or RevenueCat here — see docs/ROADMAP.md.",
   });
-});
+}));

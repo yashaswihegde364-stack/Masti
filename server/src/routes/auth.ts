@@ -2,6 +2,7 @@ import { Router } from "express";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { pool } from "../db/pool.js";
+import { asyncHandler } from "../middleware/asyncHandler.js";
 
 export const authRouter = Router();
 
@@ -13,7 +14,7 @@ const bodySchema = z.object({ email: z.string().email() });
  * the app has something to call during development. Replace with a real
  * auth provider before any real user touches this (see docs/ROADMAP.md).
  */
-authRouter.post("/dev-login", async (req, res) => {
+authRouter.post("/dev-login", asyncHandler(async (req, res) => {
   const parsed = bodySchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.flatten() });
@@ -34,4 +35,4 @@ authRouter.post("/dev-login", async (req, res) => {
   });
 
   res.json({ token, userId });
-});
+}));

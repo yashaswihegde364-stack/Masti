@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { pool } from "../db/pool.js";
+import { asyncHandler } from "../middleware/asyncHandler.js";
 
 export const verseRouter = Router();
 
@@ -9,7 +10,7 @@ export const verseRouter = Router();
  * needed. Swap for a curated, hand-picked daily list before launch —
  * this modulo-based picker is just enough to make the screen real.
  */
-verseRouter.get("/daily", async (_req, res) => {
+verseRouter.get("/daily", asyncHandler(async (_req, res) => {
   const dayOfYear = Math.floor(
     (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86_400_000
   );
@@ -30,9 +31,9 @@ verseRouter.get("/daily", async (_req, res) => {
 
   const v = rows[0];
   res.json({ id: v.id, reference: `${v.book} ${v.chapter}:${v.verse}`, text: v.text });
-});
+}));
 
-verseRouter.get("/search", async (req, res) => {
+verseRouter.get("/search", asyncHandler(async (req, res) => {
   const q = String(req.query.q ?? "").trim();
   if (!q) {
     res.status(400).json({ error: "Missing ?q=" });
@@ -54,4 +55,4 @@ verseRouter.get("/search", async (req, res) => {
       text: v.text,
     }))
   );
-});
+}));

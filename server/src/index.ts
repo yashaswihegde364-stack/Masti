@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express from "express";
+import express, { type NextFunction, type Request, type Response } from "express";
 import cors from "cors";
 import { authRouter } from "./routes/auth.js";
 import { chatRouter } from "./routes/chat.js";
@@ -19,5 +19,17 @@ app.use("/verse", verseRouter);
 app.use("/journal", journalRouter);
 app.use("/subscription", subscriptionRouter);
 
+// Catches everything forwarded by asyncHandler (see middleware/asyncHandler.ts)
+// plus any synchronous throw — without this, an async route error is an
+// unhandled rejection that crashes the whole process, not just that request.
+app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
+  console.error(err);
+  res.status(500).json({ error: "Internal server error" });
+});
+
 const port = Number(process.env.PORT ?? 8080);
 app.listen(port, () => console.log(`Masti server listening on :${port}`));
+
+process.on("unhandledRejection", (reason) => {
+  console.error("Unhandled rejection outside request handling:", reason);
+});
