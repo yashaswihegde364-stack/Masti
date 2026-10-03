@@ -1,8 +1,9 @@
 # Masti
 
-A private, Scripture-grounded Christian AI companion. Not "Jesus AI" — a
-quiet place to talk through anything and get pointed back to the Bible,
-with real verses behind every answer instead of improvised theology.
+A private, Scripture-grounded Christian AI companion that responds in
+first person, as Jesus — a deliberate product decision, made with the
+tradeoffs eyes-open; see "Persona" in `docs/ARCHITECTURE.md`. Every
+answer is grounded in a real retrieved verse, never improvised theology.
 
 > Talk about anything. Turn to Scripture.
 > A private space to confess, pray, ask questions, and reflect — with
@@ -30,9 +31,11 @@ docs/     Architecture, licensing, and roadmap notes
   one with zero licensing risk. See `docs/LICENSING.md` before adding any
   other translation (ESV/NIV require a commercial license and are *not*
   a drop-in — budget for that only once revenue justifies it).
-- **AI**: Claude, used as a generator over *retrieved* Scripture, not as
-  a freelance theologian. See `docs/ARCHITECTURE.md` for the
-  classify → retrieve → generate → safety-check pipeline.
+- **AI**: Claude, speaking first-person as Jesus, but always generating
+  over *retrieved* Scripture rather than freelancing theology — the
+  persona changed, the grounding didn't. See `docs/ARCHITECTURE.md` for
+  the classify → retrieve → generate → safety-check pipeline and the
+  "Persona" section on that tradeoff.
 - **Animation**: real motion design (Reanimated + Rive/Lottie), not literal
   real-time 3D. See `docs/ARCHITECTURE.md` for why, and where a one-off 3D
   asset (e.g. an onboarding moment) is worth the cost.

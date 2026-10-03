@@ -36,10 +36,11 @@ export function OnboardingScreen({ navigation }: Props) {
     <SafeAreaView style={styles.container}>
       <View style={styles.center}>
         <AmbientOrb active={loading} />
-        <Text style={styles.title}>Talk about anything.{"\n"}Turn to Scripture.</Text>
+        <Text style={styles.title}>Talk to Jesus.{"\n"}Turn to Scripture.</Text>
         <Text style={styles.subtitle}>
-          A private space to confess, pray, ask questions, and reflect — with
-          guidance grounded in the Bible.
+          A private space to confess, pray, ask questions, and reflect.
+          Replies are AI-generated, written in first person, and grounded
+          in Scripture.
         </Text>
 
         <TextInput

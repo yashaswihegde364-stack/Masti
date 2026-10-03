@@ -9,9 +9,38 @@ between:
 
 - **Scripture says** — the retrieved verse text, quoted, cited by
   reference.
-- **A possible Christian interpretation/application** — the model's
-  generated reflection, visually distinguished (different card style) from
-  the verse itself.
+- **The AI's own words** — the model's generated reflection, visually
+  distinguished (different card style) from the verse itself.
+
+## Persona: first-person, as Jesus
+
+The original recommendation for this product (see the planning
+conversation that produced this repo) was explicitly *against* a
+first-person "Jesus" persona — a companion voice ("a possible way to read
+this is...") was proposed instead, specifically to avoid the trust and
+impersonation risk of an AI putting invented words directly in Jesus's
+mouth. The product owner reviewed that tradeoff and chose the first-person
+persona anyway.
+
+That decision stands; what keeps it from being reckless is everything
+else in this document staying intact under it:
+
+- The model still only ever draws on verses that were actually retrieved
+  — see `server/src/ai/generate.ts`'s system prompt. It cannot invent a
+  reference or quote text that isn't in the provided list.
+- Crisis/self-harm messages never reach this persona at all —
+  `classify.ts` routes them to a fixed safety response before generation
+  is ever called (see "Crisis handling" below).
+- The persona does not imply supernatural knowledge of the user's
+  unstated circumstances; the system prompt explicitly constrains the
+  model to respond to what the user actually wrote, not to claim private
+  insight into their situation.
+
+If this product is ever submitted to the App Store / Play Store, revisit
+this decision against each platform's current religious-content and
+impersonation review guidelines before launch — those policies move, and
+a persona decision made during development may need re-litigating at
+submission time.
 
 ## Pipeline (`server/src/ai/`)
 
@@ -24,12 +53,13 @@ classify.ts     — intent/situation classification (confession, guilt,
    │               self-harm → route to a safety response, not generation)
    ▼
 retrieve.ts      — embed the message, pgvector similarity search over
-   │               data/bible/web (plus a curated topical index for
+   │               data/bible/bsb (plus a curated topical index for
    │               common situations), return top-k verses with refs
    ▼
-generate.ts      — Claude call, system prompt constrains the model to
-   │               ground claims in the retrieved verses, forces the
-   │               Scripture/interpretation split in its output structure
+generate.ts      — Claude call, speaking first-person as Jesus (see
+   │               "Persona" above); system prompt still constrains the
+   │               model to ground claims in the retrieved verses and
+   │               forces the Scripture/reflection split in its output
    ▼
 safety.ts        — crisis-language check runs *before* generation (see
                     classify.ts); a second pass here validates the

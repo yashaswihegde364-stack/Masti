@@ -55,6 +55,8 @@ before paid even gets tested.
   wrong lever for "premium feel" here).
 - Multiple Bible translations.
 - Web app version (mobile-first per the platform decision).
-- Any claim that the app "is" Jesus or speaks for God — the product
-  promise is "a private space to confess, pray, and reflect, with
-  guidance grounded in Scripture," not a roleplay.
+- ~~Any first-person "Jesus" persona~~ — superseded: the product owner
+  chose the first-person persona (see "Persona" in
+  `docs/ARCHITECTURE.md`). What's still out of scope: shipping that
+  persona without the grounding rules intact, or without re-checking
+  App Store/Play Store religious-content policy before submission.
