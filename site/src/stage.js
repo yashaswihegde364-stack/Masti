@@ -9,7 +9,9 @@
 const MAX_DPR = 2;
 
 export const FOCUS = { x: 0.66, y: 0.5 };
-const PORTRAIT = { zoom: 1.18, screenX: 0.5, screenY: 0.4 };
+// Portrait frames the subject's head (about 36% down the footage) in the open
+// band between the quote card at the top and the headline at the bottom.
+const PORTRAIT = { zoom: 1.3, screenX: 0.5, screenY: 0.47, focusY: 0.36 };
 
 export class Stage {
   constructor(canvas) {
@@ -41,7 +43,8 @@ export class Stage {
     const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
     // Put the focus point at its screen anchor, but never expose an edge.
     const dx = clamp(cw * sx - dw * FOCUS.x, cw - dw, 0);
-    const dy = clamp(ch * sy - dh * FOCUS.y, ch - dh, 0);
+    const fy = portrait ? PORTRAIT.focusY : FOCUS.y;
+    const dy = clamp(ch * sy - dh * fy, ch - dh, 0);
     return [dx, dy, dw, dh];
   }
 
