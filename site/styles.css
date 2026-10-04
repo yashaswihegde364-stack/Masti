@@ -1,0 +1,353 @@
+/* Same palette as the app (app/src/theme/colors.ts): warm neutrals, one
+   muted-gold accent used sparingly, dark-first. */
+:root {
+  --bg: #0e0e12;
+  --surface: #17171d;
+  --text: #f2f0ea;
+  --text-dim: #9a978f;
+  --accent: #c9a24b;
+  --accent-dim: #8a7638;
+  --line: rgba(242, 240, 234, 0.18);
+
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --gutter: clamp(16px, 4vw, 56px);
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { background: var(--bg); }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; }
+
+/* ---------- Stage: the scrubbed film ---------- */
+
+.stage { display: none; }
+
+.js .stage {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg);
+}
+
+.stage__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Darkens the left side so the headline reads over any frame. */
+.stage__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(14, 14, 18, 0.85) 0%, rgba(14, 14, 18, 0.35) 38%, rgba(14, 14, 18, 0) 60%),
+    radial-gradient(120% 90% at 66% 50%, rgba(14, 14, 18, 0) 55%, rgba(14, 14, 18, 0.6) 100%);
+  pointer-events: none;
+}
+
+.stage__grain {
+  position: absolute;
+  inset: -50%;
+  opacity: 0.06;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite;
+}
+
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ---------- HUD: thin chrome over the film ---------- */
+
+.hud { display: none; }
+
+.js .hud {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.hud__corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 0 solid var(--line);
+}
+.hud__corner--tl { top: var(--gutter); left: var(--gutter); border-top-width: 1px; border-left-width: 1px; }
+.hud__corner--tr { top: var(--gutter); right: var(--gutter); border-top-width: 1px; border-right-width: 1px; }
+.hud__corner--bl { bottom: var(--gutter); left: var(--gutter); border-bottom-width: 1px; border-left-width: 1px; }
+.hud__corner--br { bottom: var(--gutter); right: var(--gutter); border-bottom-width: 1px; border-right-width: 1px; }
+
+.hud__rail {
+  position: absolute;
+  top: 50%;
+  right: calc(var(--gutter) + 6px);
+  width: 1px;
+  height: 28vh;
+  transform: translateY(-50%);
+  background: var(--line);
+}
+
+.hud__rail-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: top;
+  transform: scaleY(var(--progress, 0));
+}
+
+.hud__meta {
+  position: absolute;
+  bottom: calc(var(--gutter) + 22px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.hud__meta--left { left: calc(var(--gutter) + 22px); }
+.hud__meta--right { right: calc(var(--gutter) + 22px); text-align: right; }
+
+.hud__chapter,
+.hud__frame { color: var(--text); }
+
+.hud__loader {
+  position: absolute;
+  left: calc(var(--gutter) + 22px);
+  right: calc(var(--gutter) + 22px);
+  bottom: calc(var(--gutter) + 6px);
+  height: 1px;
+  background: var(--line);
+  transition: opacity 0.6s ease;
+}
+.hud__loader.is-done { opacity: 0; }
+
+.hud__loader-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent-dim);
+  transform-origin: left;
+  transform: scaleX(var(--loaded, 0));
+}
+
+.hud__hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--gutter) + 22px);
+  transform: translateX(-50%);
+  transition: opacity 0.4s ease;
+}
+.hud__hint::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 28px;
+  margin: 10px auto 0;
+  background: linear-gradient(var(--text-dim), transparent);
+  animation: hint 1.8s ease-in-out infinite;
+}
+.hud__hint.is-hidden { opacity: 0; }
+
+@keyframes hint {
+  0%, 100% { transform: scaleY(0.4); transform-origin: top; opacity: 0.4; }
+  50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+}
+
+/* ---------- Nav ---------- */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(var(--gutter) + 18px) calc(var(--gutter) + 22px) 0;
+}
+
+.nav__mark {
+  font-family: var(--serif);
+  font-size: 20px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
+.nav__cta {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--accent);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--accent-dim);
+}
+
+/* ---------- Chapters and copy ---------- */
+
+.film { position: relative; z-index: 1; }
+
+.chapter,
+.outro {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+/* Without JS, each chapter is a plain full-height panel. */
+.chapter { display: flex; align-items: center; }
+.js .chapter { display: block; height: calc(var(--length, 3) * 100vh); }
+
+.copy {
+  max-width: 34rem;
+  padding: 0 calc(var(--gutter) + 22px);
+}
+
+/* With JS the copy pins while its chapter plays; app.js drives the fade. */
+.js .chapter .copy {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.copy__kicker {
+  margin: 0 0 18px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.copy__headline {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(40px, 6.2vw, 88px);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.copy__body {
+  margin: 24px 0 0;
+  max-width: 26rem;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.outro {
+  display: flex;
+  align-items: center;
+}
+
+/* The last frame keeps playing behind the outro; only the bottom edge
+   settles into the page background. */
+.js .outro {
+  background: linear-gradient(rgba(14, 14, 18, 0) 70%, var(--bg));
+}
+
+.copy--outro { max-width: 44rem; }
+
+.outro__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 36px;
+}
+
+.button {
+  display: inline-block;
+  padding: 14px 22px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 14px;
+  text-decoration: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.button:hover { border-color: var(--text-dim); }
+.button:focus-visible,
+.nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+.button--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+.button--primary:hover { background: #d6b25e; border-color: #d6b25e; }
+
+.outro__note {
+  margin: 28px 0 0;
+  max-width: 30rem;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+/* ---------- Portrait / phones ----------
+   The film recenters on the subject (see app.js), so the copy moves to the
+   bottom of the screen and the scrim follows it. */
+@media (max-aspect-ratio: 1/1) {
+  .stage__scrim {
+    background:
+      linear-gradient(0deg, rgba(14, 14, 18, 0.92) 0%, rgba(14, 14, 18, 0.5) 38%, rgba(14, 14, 18, 0) 62%),
+      linear-gradient(180deg, rgba(14, 14, 18, 0.5) 0%, rgba(14, 14, 18, 0) 18%);
+  }
+
+  .js .chapter .copy {
+    justify-content: flex-end;
+    padding-bottom: calc(var(--gutter) + 96px);
+  }
+
+  .js .outro {
+    align-items: flex-end;
+    padding-bottom: calc(var(--gutter) + 72px);
+  }
+
+  .copy__headline { font-size: clamp(36px, 10vw, 56px); }
+  .copy__body { font-size: 15px; }
+  .hud__rail { display: none; }
+  .hud__hint { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage__grain,
+  .hud__hint::after { animation: none; }
+}

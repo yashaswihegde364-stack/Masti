@@ -10,3 +10,6 @@ app/web-build/
 
 # scratch test artifacts
 *.tsbuildinfo
+
+# Site source footage (large; frames/ is what ships)
+site/footage/

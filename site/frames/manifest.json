@@ -1,0 +1,10 @@
+{
+  "fps": 24,
+  "pattern": "{id}/{n}.webp",
+  "pad": 4,
+  "chapters": [
+    { "id": "01-ember", "count": 144, "width": 960, "height": 540 },
+    { "id": "02-rise", "count": 144, "width": 960, "height": 540 },
+    { "id": "03-dawn", "count": 144, "width": 960, "height": 540 }
+  ]
+}

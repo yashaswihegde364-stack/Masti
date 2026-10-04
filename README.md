@@ -21,6 +21,7 @@ app/      Expo (React Native + TypeScript) mobile app
 server/   Node/TypeScript API: Bible retrieval (pgvector) + Claude-based RAG
 data/     Bible ingestion scripts and derived data (public-domain BSB text)
 docs/     Architecture, licensing, and roadmap notes
+site/     Marketing site: scroll-scrubbed cinematic landing page (see site/README.md)
 ```
 
 ## Why these choices
