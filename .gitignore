@@ -14,3 +14,4 @@ app/web-build/
 # Site source footage (large; public/frames/ is what ships)
 site/assets/raw/*
 !site/assets/raw/.gitkeep
+site/dist-hosted/

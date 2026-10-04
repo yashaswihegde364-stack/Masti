@@ -1,6 +1,4 @@
-import "@fontsource-variable/inter-tight";
-import "@fontsource/jetbrains-mono/400.css";
-import "@fontsource/jetbrains-mono/500.css";
+import "./fonts.js";
 import "lenis/dist/lenis.css";
 import "./style.css";
 
@@ -54,10 +52,10 @@ async function boot() {
   const sets = brief.chapters.map((c) => {
     const meta = byId.get(c.id);
     if (!meta) throw new Error(`No frames for chapter "${c.id}". Add assets/raw/${c.id}.mp4 and run npm run frames.`);
-    return new FrameSet(c.id, SET, meta[SET], manifest.pad);
+    return new FrameSet(c.id, SET, meta[SET], manifest.pad, meta.packs?.[SET]);
   });
   const aboutMeta = manifest.extras?.[brief.sections.about.sequence];
-  const aboutSet = aboutMeta ? new FrameSet(aboutMeta.id, SET, aboutMeta[SET], manifest.pad) : null;
+  const aboutSet = aboutMeta ? new FrameSet(aboutMeta.id, SET, aboutMeta[SET], manifest.pad, aboutMeta.packs?.[SET]) : null;
 
   // ---------- Load order ----------
   // Behind the loader: the first 24 frames of chapter 1, plus fonts so
@@ -73,6 +71,7 @@ async function boot() {
 
   const fonts = Promise.all([
     document.fonts.load('650 100px "Inter Tight Variable"'),
+    document.fonts.load('650 100px "Inter Tight"'), // hosted build uses Google Fonts
     document.fonts.load('400 11px "JetBrains Mono"'),
     document.fonts.load('500 11px "JetBrains Mono"'),
   ])

@@ -8,7 +8,11 @@
 const pad = (n, w) => String(n).padStart(w, "0");
 
 export class FrameSet {
-  constructor(id, set, meta, padWidth) {
+  // pack: optional { file, offsets } when frames are bundled into one file
+  // (the hosted build); frame i is bytes offsets[i]..offsets[i+1].
+  constructor(id, set, meta, padWidth, pack = null) {
+    this.pack = pack;
+    this.packBlob = null;
     this.id = id;
     this.set = set; // "d" | "m"
     this.count = meta.count;
@@ -19,6 +23,15 @@ export class FrameSet {
     this.images = new Array(meta.count);
     this.loaded = 0;
     this.listeners = new Set();
+  }
+
+  // Fetches the pack once; resolves to its Blob.
+  loadPack() {
+    this.packBlob ??= fetch(`${import.meta.env.BASE_URL}frames/${this.pack.file}`).then((r) => {
+      if (!r.ok) throw new Error(`frames/${this.pack.file}: HTTP ${r.status}`);
+      return r.blob();
+    });
+    return this.packBlob;
   }
 
   url(i) {
@@ -106,12 +119,23 @@ export class LoadQueue {
       this.active++;
       const img = new Image();
       img.decoding = "async";
-      img.src = frameSet.url(i);
-      img
-        .decode()
+      let objectUrl = null;
+      const source = frameSet.pack
+        ? frameSet.loadPack().then((blob) => {
+            const o = frameSet.pack.offsets;
+            objectUrl = URL.createObjectURL(blob.slice(o[i], o[i + 1], "image/webp"));
+            return objectUrl;
+          })
+        : Promise.resolve(frameSet.url(i));
+      source
+        .then((src) => {
+          img.src = src;
+          return img.decode();
+        })
         .then(() => frameSet._store(i, img))
         .catch(() => {}) // a missing frame falls back to its neighbours
         .finally(() => {
+          if (objectUrl) URL.revokeObjectURL(objectUrl); // the decoded image keeps its data
           this.active--;
           finish();
           this._pump();

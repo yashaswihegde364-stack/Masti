@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:hosted": "node scripts/build-hosted.mjs",
     "preview": "vite preview",
     "frames": "node scripts/extract-frames.mjs",
     "footage:placeholder": "node scripts/make-placeholder-footage.mjs"
