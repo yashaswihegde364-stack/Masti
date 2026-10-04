@@ -9,6 +9,7 @@
     "build:hosted": "node scripts/build-hosted.mjs",
     "preview": "vite preview",
     "frames": "node scripts/extract-frames.mjs",
+    "footage": "node scripts/render-jesus-footage.mjs",
     "footage:placeholder": "node scripts/make-placeholder-footage.mjs"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "lenis": "^1.3.26"
   },
   "devDependencies": {
+    "playwright": "^1.56.1",
     "vite": "^8.3.2"
   }
 }

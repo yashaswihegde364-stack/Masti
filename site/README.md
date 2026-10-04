@@ -48,10 +48,16 @@ ffmpeg -i assets/raw/ch01.mp4 -vf "fps=15,scale=1000:-2" -c:v libwebp -quality 7
 
 In that case, write `manifest.json` by hand in the shape the script produces.
 
-The committed frames are **placeholder footage** from
-`npm run footage:placeholder`: a procedurally rendered ember that rises into a
-dawn, made under the same rules as the real footage below. Raw clips are
-git-ignored; only frames ship.
+The committed frames come from `npm run footage`: a painted, backlit figure of
+Jesus in profile, rendered frame by frame in headless Chromium at 1920×1080,
+30 fps (`scripts/jesus/scene.js`). Chapter 1 shows him with head bowed and
+hands folded in prayer by candlelight. In chapter 2 he lifts his head as light
+rises behind him. Chapter 3 opens into a dawn glow. Fog drifts right to left
+throughout, with a slow push-in. All three chapters sample one continuous
+timeline, so the clips chain with no cut. Replace them with AI-generated
+clips any time; the pipeline is the same. Raw clips are git-ignored; only
+frames ship. (`npm run footage:placeholder` still renders the older abstract
+light version.)
 
 ## How the engine works
 
@@ -72,10 +78,10 @@ git-ignored; only frames ship.
 
 The footage decides most of how good the site looks.
 
-- **Original subject only.** Use no real faces and no recognisable
-  characters. For Masti, that also means **no depiction of Jesus's face**: the
-  app speaks in his voice, so putting a face on him is a much heavier decision
-  than a landing page should make. Use light, hands, objects and landscape.
+- **Original subject only.** Use no real actors' faces and no recognisable
+  film characters. The subject is Jesus, so generate an original depiction
+  rather than a still from a film or a copyrighted painting. Public-domain
+  classical art is fine.
 - **One continuous action per clip, 5–8 s.** No cuts and no camera shake.
 - **Slow motion only.** Fast movement turns into blurry frames when someone
   scrolls slowly.

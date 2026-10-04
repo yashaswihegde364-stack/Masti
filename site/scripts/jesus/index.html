@@ -1,0 +1,11 @@
+<!doctype html><meta charset="utf-8"><body style="margin:0;background:#000">
+<canvas id="c"></canvas>
+<script type="module">
+import { createScene } from "./scene.js";
+const q = new URLSearchParams(location.search);
+const c = document.getElementById("c");
+c.width = Number(q.get("w") || 1920);
+c.height = Number(q.get("h") || 1080);
+window.scene = createScene(c);
+window.ready = true;
+</script>
