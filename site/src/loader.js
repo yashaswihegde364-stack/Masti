@@ -2,7 +2,7 @@
 // progress (the first frames of chapter 1, plus fonts).
 import gsap from "gsap";
 
-const CHAR_MS = 22;
+const CHAR_MS = 13;
 
 export class BootLoader {
   constructor(el) {

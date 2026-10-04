@@ -74,6 +74,7 @@ async function boot() {
     document.fonts.load('650 100px "Inter Tight"'), // hosted build uses Google Fonts
     document.fonts.load('400 11px "JetBrains Mono"'),
     document.fonts.load('500 11px "JetBrains Mono"'),
+    document.fonts.load('italic 400 100px "Instrument Serif"'),
   ])
     .catch(() => {})
     .then(() => {
@@ -130,6 +131,16 @@ async function boot() {
     end: "max",
     toggleClass: { targets: ".nav", className: "is-solid" },
   });
+
+  // Chapter rail: jump to the moment each chapter's headline has fully landed.
+  for (const el of document.querySelectorAll(".rail__item")) {
+    el.addEventListener("click", () => {
+      const k = Number(el.dataset.chapter);
+      const y = film.scrollFor(k + (k === 0 ? 0 : 0.12));
+      if (lenis) lenis.scrollTo(y, { duration: 1.6 });
+      else window.scrollTo(0, y);
+    });
+  }
 
   setupCursor();
   setupAbout(aboutSet, reduced);

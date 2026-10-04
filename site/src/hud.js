@@ -11,6 +11,8 @@ export class Hud {
     this.frame = document.querySelector(".hud__frame");
     this.pct = document.querySelector(".hud__pct");
     this.bar = document.querySelector(".hud__progress span");
+    this.cue = document.querySelector(".hud__cue");
+    this.railItems = [...document.querySelectorAll(".rail__item")];
     this.prev = {};
   }
 
@@ -26,8 +28,11 @@ export class Hud {
     this.set("frame", this.frame, `${pad(frame, 3)} / ${pad(frames, 3)}`, text);
     this.set("pct", this.pct, `${percent.toFixed(1).padStart(4, "0")}%`, text);
     this.set("bar", this.bar, chapterProgress.toFixed(4), (el, v) => (el.style.transform = `scaleX(${v})`));
+    // The scroll cue fades out over the first few percent of the film.
+    this.set("cue", this.cue, Math.max(0, 1 - percent / 3).toFixed(2), (el, v) => (el.style.opacity = v));
     if (this.prev.chapter !== chapter) {
       this.prev.chapter = chapter;
+      this.railItems.forEach((el, i) => el.setAttribute("aria-current", i === chapter ? "step" : "false"));
       this.showLabels(chapter);
     }
   }

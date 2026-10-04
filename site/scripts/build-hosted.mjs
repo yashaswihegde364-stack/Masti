@@ -30,7 +30,7 @@ const html = `<title>Masti</title>
 <meta name="description" content="A private space to confess, pray, ask questions, and reflect — with guidance grounded in the Bible." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..700&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500&display=swap" />
 <style>
 :root { color-scheme: dark; }
 ${css}

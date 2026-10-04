@@ -5,7 +5,8 @@ const esc = (s) =>
 
 const lines = (parts, cls) =>
   parts
-    .map((t, i) => `<span class="${cls}"><span class="${cls}-inner${i === 1 ? " is-accent" : ""}">${esc(t)}</span></span>`)
+    // Editorial pairing: line 1 uppercase grotesk, line 2 glowing italic serif.
+    .map((t, i) => `<span class="${cls}${i === 1 ? " is-serif" : ""}"><span class="${cls}-inner${i === 1 ? " is-accent" : ""}">${esc(t)}</span></span>`)
     .join("");
 
 function card(q, n) {
@@ -67,7 +68,14 @@ export function buildPage(brief) {
         <div><dt>Progress</dt><dd class="hud__pct">00.0%</dd></div>
       </dl>
       <div class="hud__progress"><span></span></div>
+      <div class="hud__cue"><span>Scroll to begin</span><i></i></div>
     </div>
+
+    <nav class="rail mono" aria-label="Chapters">
+      ${brief.chapters
+        .map((c, i) => `<button class="rail__item" type="button" data-chapter="${i}"><span class="rail__label">${esc(c.eyebrow.replace(/^●\s*/, ""))}</span><span class="rail__tick"></span></button>`)
+        .join("")}
+    </nav>
 
     <header class="nav">
       <a class="nav__brand mono" href="#top"><span class="nav__dot"></span>${esc(brief.brand)} <span class="nav__sep">/</span> ${esc(brief.division)}</a>
@@ -94,7 +102,7 @@ export function buildPage(brief) {
           </div>
           <div class="about__copy">
             <p class="eyebrow mono">${esc(about.eyebrow)}</p>
-            <h2 class="about__headline glow">${about.headline.map((l) => `<span>${esc(l)}</span>`).join("")}</h2>
+            <h2 class="about__headline glow">${about.headline.map((l, i) => `<span${i === 1 ? ' class="is-serif"' : ""}>${esc(l)}</span>`).join("")}</h2>
             ${about.body.map((p) => `<p class="about__body">${esc(p)}</p>`).join("")}
           </div>
         </section>
