@@ -1,0 +1,68 @@
+{
+  "quality": 70,
+  "pad": 4,
+  "chapters": [
+    {
+      "id": "ch01",
+      "d": {
+        "count": 180,
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      },
+      "m": {
+        "count": 90,
+        "width": 1000,
+        "height": 562,
+        "fps": 15
+      }
+    },
+    {
+      "id": "ch02",
+      "d": {
+        "count": 180,
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      },
+      "m": {
+        "count": 90,
+        "width": 1000,
+        "height": 562,
+        "fps": 15
+      }
+    },
+    {
+      "id": "ch03",
+      "d": {
+        "count": 180,
+        "width": 1920,
+        "height": 1080,
+        "fps": 30
+      },
+      "m": {
+        "count": 90,
+        "width": 1000,
+        "height": 562,
+        "fps": 15
+      }
+    }
+  ],
+  "extras": {
+    "about": {
+      "id": "about",
+      "d": {
+        "count": 180,
+        "width": 1080,
+        "height": 1350,
+        "fps": 30
+      },
+      "m": {
+        "count": 90,
+        "width": 720,
+        "height": 900,
+        "fps": 15
+      }
+    }
+  }
+}

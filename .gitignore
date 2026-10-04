@@ -11,5 +11,6 @@ app/web-build/
 # scratch test artifacts
 *.tsbuildinfo
 
-# Site source footage (large; frames/ is what ships)
-site/footage/
+# Site source footage (large; public/frames/ is what ships)
+site/assets/raw/*
+!site/assets/raw/.gitkeep

@@ -2,90 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Masti — Talk about anything. Turn to Scripture.</title>
   <meta name="description" content="A private space to confess, pray, ask questions, and reflect — with guidance grounded in the Bible." />
   <meta name="theme-color" content="#0E0E12" />
-  <link rel="preload" href="frames/manifest.json" as="fetch" crossorigin />
-  <link rel="stylesheet" href="styles.css" />
-  <script>document.documentElement.classList.add("js");</script>
+  <link rel="preload" href="./frames/manifest.json" as="fetch" crossorigin />
+  <link rel="preload" href="./frames/ch01/d/0001.webp" as="image" media="(prefers-reduced-motion: no-preference) and (min-width: 600px) and (min-height: 600px)" />
+  <link rel="preload" href="./frames/ch01/m/0001.webp" as="image" media="(prefers-reduced-motion: no-preference) and (max-width: 599px), (prefers-reduced-motion: no-preference) and (max-height: 599px)" />
+  <script type="module" src="/src/main.js"></script>
 </head>
 <body>
-  <!-- The film: one canvas, scrubbed by scroll. Everything else is HUD. -->
-  <div class="stage" aria-hidden="true">
-    <canvas class="stage__canvas"></canvas>
-    <div class="stage__scrim"></div>
-    <div class="stage__grain"></div>
-  </div>
-
-  <div class="hud" aria-hidden="true">
-    <span class="hud__corner hud__corner--tl"></span>
-    <span class="hud__corner hud__corner--tr"></span>
-    <span class="hud__corner hud__corner--bl"></span>
-    <span class="hud__corner hud__corner--br"></span>
-
-    <div class="hud__rail">
-      <span class="hud__rail-fill"></span>
-    </div>
-
-    <div class="hud__meta hud__meta--left">
-      <span class="hud__chapter">01 / 03</span>
-      <span class="hud__title">Ember</span>
-    </div>
-    <div class="hud__meta hud__meta--right">
-      <span class="hud__frame">F 0001</span>
-      <span class="hud__time">00:00:00</span>
-    </div>
-
-    <div class="hud__loader"><span class="hud__loader-fill"></span></div>
-    <div class="hud__hint">Scroll</div>
-  </div>
-
-  <header class="nav">
-    <a class="nav__mark" href="#top">Masti</a>
-    <a class="nav__cta" href="#download">Get the app</a>
-  </header>
-
-  <main id="top" class="film">
-    <!-- One <section> per clip. data-chapter must match the clip's file name
-         (see site/frames/manifest.json); data-length is its scroll length in
-         viewport heights — longer means slower playback. -->
-    <section class="chapter" data-chapter="01-ember" data-title="Ember" data-length="3">
-      <div class="copy">
-        <p class="copy__kicker">A private space</p>
-        <h1 class="copy__headline">Bring what<br />you carry.</h1>
-        <p class="copy__body">Confess, pray, ask the questions you haven't said out loud. No feed, no audience — just you and an honest answer.</p>
-      </div>
-    </section>
-
-    <section class="chapter" data-chapter="02-rise" data-title="Rise" data-length="3">
-      <div class="copy">
-        <p class="copy__kicker">Grounded, not improvised</p>
-        <h2 class="copy__headline">Every answer<br />rooted in Scripture.</h2>
-        <p class="copy__body">Each reply is built on a real verse, retrieved from the Berean Standard Bible and shown alongside it, so you can read the passage for yourself.</p>
-      </div>
-    </section>
-
-    <section class="chapter" data-chapter="03-dawn" data-title="Dawn" data-length="3">
-      <div class="copy">
-        <p class="copy__kicker">Every morning</p>
-        <h2 class="copy__headline">A verse to<br />begin the day.</h2>
-        <p class="copy__body">A daily verse and a quiet journal to write back to it. Keep what you've learned; come back to it when you need it.</p>
-      </div>
-    </section>
-
-    <section id="download" class="outro">
-      <div class="copy copy--outro">
-        <h2 class="copy__headline">Talk about anything.<br />Turn to Scripture.</h2>
-        <div class="outro__actions">
-          <a class="button button--primary" href="#">Download for iOS</a>
-          <a class="button" href="#">Get it on Android</a>
-        </div>
-        <p class="outro__note">Replies are AI-generated, written in first person, and grounded in Scripture. Masti is not a substitute for a pastor, counselor, or emergency services.</p>
-      </div>
-    </section>
-  </main>
-
-  <script src="app.js" defer></script>
+  <noscript>
+    <main style="padding:24px;font-family:system-ui;color:#F2F0EA;background:#0E0E12;min-height:100vh">
+      <h1>Masti</h1>
+      <p>A private space to confess, pray, ask questions, and reflect — with guidance grounded in the Bible.</p>
+    </main>
+  </noscript>
 </body>
 </html>
